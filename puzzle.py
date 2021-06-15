@@ -8,11 +8,11 @@ class Puzzle:
         self.difficulty = difficulty
         self.grid = grid
 
-    def get_singleword(self, length):
+    def get_singleword(self, length, condition):
         con = sqlite3.connect("woordenboek.db")
         c = con.cursor()
 
-        c.execute(f"SELECT * FROM woorden WHERE length(woord) == {length+1} ORDER BY RANDOM() Limit 1")
+        c.execute(f"SELECT * FROM woorden WHERE length(woord) == {length+1} ORDER BY RANDOM() Limit 1 {condition}")
 
         return c.fetchone()[0]
 
@@ -23,8 +23,8 @@ class Puzzle:
     def set_grid(self, grid):
         self.grid = grid
 
-    def generate_grid(self, max_lenght):
-        grid = np.chararray((max_lenght, max_lenght), 1, True)
+    def generate_grid(self, grid_size):
+        grid = np.chararray((grid_size, grid_size), 1, True)
         grid.fill("*")
 
         self.set_grid(grid)
@@ -33,10 +33,9 @@ class Puzzle:
     def fill_grid(self, word, coordinates):
         newgrid = self.get_grid()
 
-        for i in range(len(word)):
+        for i in range(len(word)-1):
             c_pos = coordinates[i]
             newgrid[(c_pos[0])][(c_pos[1])] = word[i]
-            print(newgrid[(c_pos[0])][(c_pos[1])])
 
         self.set_grid(newgrid)
         return newgrid
@@ -44,13 +43,14 @@ class Puzzle:
     def intersection_check(self, coordinates):
         grid = self.get_grid()
         intersections = []
+
         for c in coordinates:
             if grid[c[0]][c[1]] == "*":
-                continue
+                intersections.append("*")
             else:
                 intersections.append(c)
 
-        if len(intersections) == 0:
+        if intersections.count("*") == len(intersections):
             return 1
         else:
             return intersections
@@ -62,15 +62,13 @@ class Puzzle:
         for i in range(grid_size-word_lenght):
             tmp.append(grid[i])
 
-        rows = np.shape(tmp)[0]
-        colum_lenght = np.shape(tmp)[1]
-
-        print(rows, colum_lenght)
+        index_rows = np.shape(tmp)[0] - 1
+        index_colum = np.shape(tmp)[1] - 1
 
         if axis == [0, 1]:
-            start = [random.randint(0, colum_lenght), random.randint(0, rows)]
+            start = [random.randint(0, index_colum), random.randint(0, index_rows)]
         else:
-            start = [random.randint(0, rows), random.randint(0, colum_lenght)]
+            start = [random.randint(0, index_rows), random.randint(0, index_colum)]
 
         coordinates.append(start)
 
@@ -78,32 +76,48 @@ class Puzzle:
             start = start[0] + axis[0], start[1] + axis[1]
             coordinates.append(start)
 
+        return coordinates
 
-    def get_crosswords(self, amount, min_lenght, max_lenght):
+    def get_crosswords(self, word_count, min_lenght, max_lenght, min_crossings, grid_size):
 
         h_words = []
+        v_words = []
 
-        v_word = []
-
-        h_amount = amount - random.randint(round(amount/3), round(amount/2))
-        v_amount = amount - h_amount
+        h_amount = word_count - random.randint(round(word_count / 3), round(word_count / 2))
+        v_amount = word_count - h_amount
 
         for i in range(round(h_amount)):
-            h_word_lenght = random.randint(min_lenght, max_lenght)
-            h_words.append(self.get_singleword(h_word_lenght))
+            word_lenght = random.randint(min_lenght, max_lenght)
+            coordiantes = self.generate_coordiante(word_lenght, [0, 1], grid_size)
+            word = self.get_singleword(word_lenght, "")
+            # intersections = self.intersection_check()
+
+            h_words.append(word)
+            self.fill_grid(word, coordiantes)
 
         for i in range(round(v_amount)):
-            v_word_lenght = random.randint(min_lenght, max_lenght)
-            v_word.append(self.get_singleword(v_word_lenght))
+            word_lenght = random.randint(min_lenght, max_lenght)
+            coordiantes = self.generate_coordiante(word_lenght, [1, 0], grid_size)
+            word = self.get_singleword(word_lenght, "")
+            # intersections = self.intersection_check()
 
-        return h_words, v_word
+            v_words.append(word)
+            self.fill_grid(word, coordiantes)
 
-    def generate_puzzle(self):
-        pass
+        print(f"h={h_words} \n v={v_words}")
 
+        return 1
 
-coor = [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6]]
+    def generate_puzzle(self, word_count, min_lenght, max_lenght, min_crossings):
+        grid_size = max_lenght + 2
+
+        self.generate_grid(grid_size)
+        print(self.get_grid())
+        self.get_crosswords(word_count, min_lenght, max_lenght, min_crossings, grid_size)
+
+        return self.get_grid()
+
 
 p1 = Puzzle(1, np.chararray([]))
-p1.generate_grid(15)
-p1.generate_coordiante(8, [1,0], 15)
+
+print(p1.generate_puzzle(10, 3, 10, 2))
