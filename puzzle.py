@@ -41,10 +41,9 @@ class Puzzle:
         self.set_grid(newgrid)
         return newgrid
 
-    def path_check(self, coordinates):
+    def intersection_check(self, coordinates):
         grid = self.get_grid()
         intersections = []
-
         for c in coordinates:
             if grid[c[0]][c[1]] == "*":
                 continue
@@ -56,10 +55,29 @@ class Puzzle:
         else:
             return intersections
 
-    def generate_coordiantes(self, h_word_count, v_word_count):
-        h_cords = []
-        v_cords = []
-        pass
+    def generate_coordiante(self, word_lenght, axis, grid_size):
+        grid = self.get_grid()
+        coordinates = []
+        tmp = []
+        for i in range(grid_size-word_lenght):
+            tmp.append(grid[i])
+
+        rows = np.shape(tmp)[0]
+        colum_lenght = np.shape(tmp)[1]
+
+        print(rows, colum_lenght)
+
+        if axis == [0, 1]:
+            start = [random.randint(0, colum_lenght), random.randint(0, rows)]
+        else:
+            start = [random.randint(0, rows), random.randint(0, colum_lenght)]
+
+        coordinates.append(start)
+
+        for i in range(word_lenght-1):
+            start = start[0] + axis[0], start[1] + axis[1]
+            coordinates.append(start)
+
 
     def get_crosswords(self, amount, min_lenght, max_lenght):
 
@@ -71,12 +89,12 @@ class Puzzle:
         v_amount = amount - h_amount
 
         for i in range(round(h_amount)):
-            word_lenght = random.randint(min_lenght, max_lenght)
-            h_words.append(self.get_singleword(word_lenght))
+            h_word_lenght = random.randint(min_lenght, max_lenght)
+            h_words.append(self.get_singleword(h_word_lenght))
 
         for i in range(round(v_amount)):
-            randint = random.randint(min_lenght, max_lenght)
-            v_word.append(self.get_singleword(randint))
+            v_word_lenght = random.randint(min_lenght, max_lenght)
+            v_word.append(self.get_singleword(v_word_lenght))
 
         return h_words, v_word
 
@@ -88,3 +106,4 @@ coor = [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6]]
 
 p1 = Puzzle(1, np.chararray([]))
 p1.generate_grid(15)
+p1.generate_coordiante(8, [1,0], 15)
