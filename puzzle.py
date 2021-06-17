@@ -12,10 +12,9 @@ class Puzzle:
         con = sqlite3.connect("woordenboek.db")
         c = con.cursor()
 
-        c.execute(f"SELECT * FROM woorden WHERE length(woord) == {length+1} {condition} ORDER BY RANDOM() Limit 1;")
+        c.execute(f"SELECT * FROM woorden WHERE LENGTH(woord) == {length+1} {condition} ORDER BY RANDOM() Limit 1;")
 
         return c.fetchone()[0]
-
 
     def get_grid(self):
         return self.grid
@@ -40,20 +39,14 @@ class Puzzle:
         self.set_grid(newgrid)
         return newgrid
 
-    def intersection_check(self, coordinates):
+    def get_intersection_info(self, coordinates):
         grid = self.get_grid()
         intersections = []
 
         for c in coordinates:
-            if grid[c[0]][c[1]] == "*":
-                intersections.append("*")
-            else:
-                intersections.append(c)
+            intersections.append(grid[c[0]][c[1]])
 
-        if intersections.count("*") == len(intersections):
-            return 1
-        else:
-            return intersections
+        return intersections
 
     def generate_coordiante(self, word_lenght, axis, grid_size):
         grid = self.get_grid()
@@ -78,36 +71,57 @@ class Puzzle:
 
         return coordinates
 
-    def get_crossword(self, amount, min_lenght, max_lenght, grid_size, used_coordinates, h_words, min_crossings):
+    def get_crossword(self, amount, min_lenght, max_lenght, grid_size, used_coordinates, h_words, min_crossings, axis):
         for i in range(round(amount)):
             word_lenght = random.randint(min_lenght, max_lenght)
 
+            used_point_lst = []
+            for used_coordinate_set in used_coordinates:
+                for used_point in used_coordinate_set:
+                    used_point_lst.append(used_point)
+
             invalid_coordinates = True
             while invalid_coordinates:
+
                 invalid_coordinates = False
 
-                coordiantes = self.generate_coordiante(word_lenght, [0, 1], grid_size)
-                intersection_info = self.intersection_check(coordiantes)
+                gen_coordiantes = self.generate_coordiante(word_lenght, axis, grid_size)
+                intersection_info = self.get_intersection_info(gen_coordiantes)
 
-                for coordinate in coordiantes:
-                    if coordinate in used_coordinates\
-                            or intersection_info.count("*") >= word_lenght + 1 - min_crossings:
+                print(f"used_point_lst: {used_point_lst}")
+                for point in gen_coordiantes:
+                    print(f"point={point}")
+                    if point in used_point_lst or intersection_info.count("*") >= word_lenght + 1 - min_crossings:
                         invalid_coordinates = True
                         break
 
-            used_coordinates.append(coordiantes)
+            used_coordinates.append(gen_coordiantes)
 
-            condition = "AND WHERE woord LIKE "
-            for i in intersection_info:
-                if i == "*":
-                    condition = (condition + "_")
-                else:
-                    condition = (condition + f"{i}")
+            if intersection_info.count("*") == word_lenght:
+                condition = ""
+            else:   # create condition
+                condition = "AND woord LIKE '%"
+                for i in intersection_info:
+                    if i == "*":
+                        condition = (condition + "_")
+                    else:
+                        condition = (condition + f"{i}")
 
-            word = self.get_singleword(word_lenght, condition)
-            h_words.append(word)
+                condition = (condition + "%'")
+                print(f"condition: {condition}")
+            try:
+                woord = self.get_singleword(word_lenght, condition)
+                print(f"lenght:{word_lenght}")
+                print(f"woord:{woord}")
+                h_words.append(woord)
 
-            self.fill_grid(word, coordiantes)
+                self.fill_grid(woord, gen_coordiantes)
+
+                print(self.get_grid())
+                print("\n")
+            except TypeError:
+                return self.get_crossword(amount, min_lenght, max_lenght, grid_size, used_coordinates, h_words,
+                                           min_crossings, axis)
 
             return used_coordinates, h_words
 
@@ -119,24 +133,28 @@ class Puzzle:
         h_amount = word_count - random.randint(round(word_count / 3), round(word_count / 2))
         v_amount = word_count - h_amount
 
-        h_amount -= min_crossings
-        v_amount -= min_crossings
+        print(f"min crossing = {min_crossings}")
+        # h_amount -= min_crossings
+        # v_amount -= min_crossings
 
         h_coordinates = []
         v_coordinates = []
 
         for i in range(min_crossings):
-            h_coordinates, h_words = self.get_crossword(self, h_amount, min_lenght, max_lenght, grid_size,
-                                                        h_coordinates, h_words, 0)
+            print(f"horziantaal getV")
+            h_coordinates, h_words = self.get_crossword(h_amount, min_lenght, max_lenght, grid_size,
+                                                        h_coordinates, h_words, 0, [0, 1])
+            print(f"verticaal getV")
+            v_coordinates, v_words = self.get_crossword(v_amount, min_lenght, max_lenght, grid_size,
+                                                        v_coordinates, v_words, 0, [1, 0])
+        print("for loop over -----------\n\n")
 
-            v_coordinates, v_words = self.get_crossword(self, v_amount, min_lenght, max_lenght, grid_size,
-                                                        v_coordinates, v_words, 0)
-
-        h_coordinates, h_words = self.get_crossword(self, h_amount, min_lenght, max_lenght, grid_size, h_coordinates,
-                                                    h_words, min_crossings)
-
-        v_coordinates, v_words = self.get_crossword(self, v_amount, min_lenght, max_lenght, grid_size, v_coordinates,
-                                                    v_words, min_crossings)
+        print(f"horziantaal getV")
+        h_coordinates, h_words = self.get_crossword(h_amount, min_lenght, max_lenght, grid_size, h_coordinates,
+                                                    h_words, min_crossings, [0, 1])
+        print(f"verticaal getV")
+        v_coordinates, v_words = self.get_crossword(v_amount, min_lenght, max_lenght, grid_size, v_coordinates,
+                                                    v_words, min_crossings, [1, 0])
 
         print(f"h={h_words} \n v={v_words}")
 
@@ -146,7 +164,6 @@ class Puzzle:
         grid_size = max_lenght + 2
 
         self.generate_grid(grid_size)
-        print(self.get_grid())
         self.fill_in_crosswords(word_count, min_lenght, max_lenght, min_crossings, grid_size)
 
         return self.get_grid()
