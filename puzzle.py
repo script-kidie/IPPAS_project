@@ -12,7 +12,7 @@ class Puzzle:
         con = sqlite3.connect("woordenboek.db")
         c = con.cursor()
 
-        c.execute(f"SELECT * FROM woorden WHERE length(woord) == {length+1} ORDER BY RANDOM() Limit 1 {condition}")
+        c.execute(f"SELECT * FROM woorden WHERE length(woord) == {length+1} {condition} ORDER BY RANDOM() Limit 1;")
 
         return c.fetchone()[0]
 
@@ -78,7 +78,40 @@ class Puzzle:
 
         return coordinates
 
-    def get_crosswords(self, word_count, min_lenght, max_lenght, min_crossings, grid_size):
+    def get_crossword(self, amount, min_lenght, max_lenght, grid_size, used_coordinates, h_words, min_crossings):
+        for i in range(round(amount)):
+            word_lenght = random.randint(min_lenght, max_lenght)
+
+            invalid_coordinates = True
+            while invalid_coordinates:
+                invalid_coordinates = False
+
+                coordiantes = self.generate_coordiante(word_lenght, [0, 1], grid_size)
+                intersection_info = self.intersection_check(coordiantes)
+
+                for coordinate in coordiantes:
+                    if coordinate in used_coordinates\
+                            or intersection_info.count("*") >= word_lenght + 1 - min_crossings:
+                        invalid_coordinates = True
+                        break
+
+            used_coordinates.append(coordiantes)
+
+            condition = "AND WHERE woord LIKE "
+            for i in intersection_info:
+                if i == "*":
+                    condition = (condition + "_")
+                else:
+                    condition = (condition + f"{i}")
+
+            word = self.get_singleword(word_lenght, condition)
+            h_words.append(word)
+
+            self.fill_grid(word, coordiantes)
+
+            return used_coordinates, h_words
+
+    def fill_in_crosswords(self, word_count, min_lenght, max_lenght, min_crossings, grid_size):
 
         h_words = []
         v_words = []
@@ -86,23 +119,24 @@ class Puzzle:
         h_amount = word_count - random.randint(round(word_count / 3), round(word_count / 2))
         v_amount = word_count - h_amount
 
-        for i in range(round(h_amount)):
-            word_lenght = random.randint(min_lenght, max_lenght)
-            coordiantes = self.generate_coordiante(word_lenght, [0, 1], grid_size)
-            word = self.get_singleword(word_lenght, "")
-            # intersections = self.intersection_check()
+        h_amount -= min_crossings
+        v_amount -= min_crossings
 
-            h_words.append(word)
-            self.fill_grid(word, coordiantes)
+        h_coordinates = []
+        v_coordinates = []
 
-        for i in range(round(v_amount)):
-            word_lenght = random.randint(min_lenght, max_lenght)
-            coordiantes = self.generate_coordiante(word_lenght, [1, 0], grid_size)
-            word = self.get_singleword(word_lenght, "")
-            # intersections = self.intersection_check()
+        for i in range(min_crossings):
+            h_coordinates, h_words = self.get_crossword(self, h_amount, min_lenght, max_lenght, grid_size,
+                                                        h_coordinates, h_words, 0)
 
-            v_words.append(word)
-            self.fill_grid(word, coordiantes)
+            v_coordinates, v_words = self.get_crossword(self, v_amount, min_lenght, max_lenght, grid_size,
+                                                        v_coordinates, v_words, 0)
+
+        h_coordinates, h_words = self.get_crossword(self, h_amount, min_lenght, max_lenght, grid_size, h_coordinates,
+                                                    h_words, min_crossings)
+
+        v_coordinates, v_words = self.get_crossword(self, v_amount, min_lenght, max_lenght, grid_size, v_coordinates,
+                                                    v_words, min_crossings)
 
         print(f"h={h_words} \n v={v_words}")
 
@@ -113,7 +147,7 @@ class Puzzle:
 
         self.generate_grid(grid_size)
         print(self.get_grid())
-        self.get_crosswords(word_count, min_lenght, max_lenght, min_crossings, grid_size)
+        self.fill_in_crosswords(word_count, min_lenght, max_lenght, min_crossings, grid_size)
 
         return self.get_grid()
 

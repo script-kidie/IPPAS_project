@@ -1,11 +1,18 @@
-c= "c"
-b= "b"
+hoi = [1,2,4,56,7,7854,435,5673465346,45674576,34534]
+hoi2 = [1,233,4324,534,653,234,234]
+lst = []
 
-l = []
+def gdrfg(hoi):
+    add = "a"
+    for i in range(len(hoi)):
+        hoi[i] += 1
+        if hoi[i] > 3:
+            lst.append(add)
+    return hoi, hoi2
 
-l.append('a')
-l.append('b')
-l.append('c')
-l.append('d')
 
-print(l)
+hoi, hoi2 = gdrfg(hoi)
+
+print(hoi)
+print(hoi2)
+print(lst)
