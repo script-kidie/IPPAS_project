@@ -1,22 +1,27 @@
 import PySimpleGUI as sg
-import random
-import string
 
 
 class Gui:
 
-    def make_puzzle_words(self, h_words, v_words):
+    def make_puzzle_words(self, h_words, v_words, first_grid_points, grid_size):
         str1 = "Horizontale woorden:\n"
         str2 = "Verticaale woorden:\n"
+
+        h_coordinates, v_coordinates = first_grid_points
+        print(h_coordinates, v_coordinates)
         word_number = 1
+        for row in range(grid_size):
+            for cel in range(grid_size):
+                point_coordinates = [row, cel]
+                if point_coordinates in h_coordinates:
+                    str1 = (str1 + f"  {word_number}.{h_words[h_coordinates.index(point_coordinates)]}")
 
-        for word in h_words:
-            str1 = (str1 + f"  {word_number}.{word}")
-            word_number += 1
+                if point_coordinates in v_coordinates:
+                    str2 = (str2 + f"  {word_number}.{v_words[v_coordinates.index(point_coordinates)]}")
 
-        for word in v_words:
-            str2 = (str2 + f"  {word_number}.{word}")
-            word_number += 1
+                if point_coordinates in v_coordinates or point_coordinates in h_coordinates:
+                    print("+")
+                    word_number += 1
 
         return str(str1 + str2)
 
@@ -24,7 +29,7 @@ class Gui:
 
         box_area = 25
 
-        puzzle_words = self.make_puzzle_words(h_words, v_words)
+        puzzle_words = self.make_puzzle_words(h_words, v_words, first_grid_points, grid_size)
 
         sg.LOOK_AND_FEEL_TABLE["MyCreatedTheme"] = {"BACKGROUND": "#315259",
                                                     "TEXT": "black",
@@ -64,7 +69,7 @@ class Gui:
                                      line_color="black", fill_color="black")
 
                 point_coordinates = [row, cel]
-                if point_coordinates in first_grid_points:
+                if point_coordinates in first_grid_points[0] or point_coordinates in first_grid_points[1]:
                     p.draw_text(f"{word_number}", (cel * box_area + 15, row * box_area + 13))
                     word_number += 1
 

@@ -166,5 +166,5 @@ class puzzle:
 
         h_coordinates, v_coordinates, h_words, v_words = self.fill_in_crosswords(word_count, min_lenght, max_lenght,
                                                                                  min_crossings, max_crossings,grid_size)
-
+        print(self.get_grid())
         return self.get_grid(), h_coordinates, v_coordinates, h_words, v_words, grid_size
