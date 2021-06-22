@@ -1,9 +1,28 @@
-import sqlite3, random
-import numpy as np
+from puzzle import *
+from gui import *
 
-con = sqlite3.connect("woordenboek.db")
-c = con.cursor()
+puzzle = puzzle(np.chararray([]))
+gui = Gui()
 
-c.execute(f"SELECT * FROM woorden WHERE LENGTH(woord) == 6 AND woord LIKE '_t____%'ORDER BY RANDOM() Limit 1;")
+word_count = 12
 
-print(c.fetchone())
+puzzle_grid, h_coordinates, v_coordinates, h_words, v_words, grid_size = puzzle.generate_puzzle(word_count, 3, 5, 1, 2)
+
+
+def get_first_grid_points(h_coordinates, v_coordinates):
+    first_grid_points = []
+
+    # print(f"h = {h_coordinates}")
+    # print(f"v = {v_coordinates}")
+
+    for lst in h_coordinates:
+        first_grid_points.append(lst[0])
+
+    for lst in v_coordinates:
+        first_grid_points.append(lst[0])
+    # print(f"f = {first_grid_points}")
+    return first_grid_points
+
+
+gui.make_puzzle_page(grid_size, puzzle_grid, get_first_grid_points(h_coordinates, v_coordinates),
+                     h_words, v_words, h_coordinates, v_coordinates)
