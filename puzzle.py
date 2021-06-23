@@ -1,4 +1,5 @@
-import sqlite3, random
+import sqlite3
+import random
 import numpy as np
 
 
@@ -213,6 +214,7 @@ class Puzzle:
     def fill_in_crosswords(self, word_count, min_length, max_length, min_crossings, max_crossings, grid_size):
         """
         initiates the filling of the grid
+
         :param word_count: int (determines the amount of words in the puzzle)
         :param min_length: integer (determines the minimal length of the word)
         :param max_length: integer (determines the max length of the word)
@@ -259,6 +261,7 @@ class Puzzle:
     def generate_puzzle(self, word_count, min_length, max_length, min_crossings, max_crossings):
         """
         initiates the entire process of generating a crossword puzzle
+
         :param word_count: int (determines the amount of words in the puzzle)
         :param min_length: integer (determines the minimal length of the word)
         :param max_length: integer (determines the max length of the word)
