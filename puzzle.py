@@ -39,7 +39,7 @@ class Puzzle:
         # fetch a word from the database with a given length and optional letter positions
         c.execute(f"SELECT * FROM woorden WHERE LENGTH(woord) == {length + 1} {condition} ORDER BY RANDOM() Limit 1;")
 
-        return c.fetchone()[0]
+        return (c.fetchone()[0]).split("\n")[0]  # ensure the "\n" character is removed from the string
 
     def set_blank_grid(self, grid_size):
         """
@@ -63,7 +63,7 @@ class Puzzle:
         """
         newgrid = self.get_grid()  # fetch the current grid
 
-        for i in range(len(word) - 1):  # loops trough all the indexes of the word
+        for i in range(len(word)):  # loops trough all the indexes of the word
             c_pos = coordinates[i]  # fetch the current index's coordinates
             newgrid[(c_pos[0])][(c_pos[1])] = word[i]  # put the current letter on the fetched coordinates in the grid
 

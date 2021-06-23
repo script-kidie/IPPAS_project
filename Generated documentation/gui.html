@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module gui</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>gui</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cbram%5Cdocuments%5Cgithub%5Cippas_project%5Cgui.py">c:\users\bram\documents\github\ippas_project\gui.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="PySimpleGUI.html">PySimpleGUI</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="gui.html#Gui">Gui</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Gui">class <strong>Gui</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Gui-get_first_grid_points"><strong>get_first_grid_points</strong></a>(self, h_coordinates, v_coordinates)</dt><dd><tt>gathers&nbsp;the&nbsp;first&nbsp;points&nbsp;of&nbsp;each&nbsp;coordinate&nbsp;vertical&nbsp;and&nbsp;horizontal&nbsp;coordinate&nbsp;set<br>
+&nbsp;<br>
+:param&nbsp;h_coordinates:&nbsp;list&nbsp;(list&nbsp;with&nbsp;all&nbsp;the&nbsp;coordinates&nbsp;used&nbsp;for&nbsp;horizontal&nbsp;words)<br>
+:param&nbsp;v_coordinates:&nbsp;list&nbsp;(list&nbsp;with&nbsp;all&nbsp;the&nbsp;coordinates&nbsp;used&nbsp;for&nbsp;vertical&nbsp;words)<br>
+:return:&nbsp;list,&nbsp;list&nbsp;(contain&nbsp;the&nbsp;first&nbsp;individual&nbsp;coordinate&nbsp;points&nbsp;of&nbsp;the&nbsp;horizontal&nbsp;or&nbsp;vertical&nbsp;words)</tt></dd></dl>
+
+<dl><dt><a name="Gui-get_puzzle_words"><strong>get_puzzle_words</strong></a>(self, first_coordinate_point, coordinates, words, word_number)</dt><dd><tt>generates&nbsp;part&nbsp;of&nbsp;the&nbsp;words&nbsp;that&nbsp;are&nbsp;presented&nbsp;on&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
+&nbsp;<br>
+:param&nbsp;first_coordinate_point:&nbsp;list&nbsp;(list&nbsp;of&nbsp;the&nbsp;first&nbsp;individual&nbsp;points&nbsp;of&nbsp;coordinates)<br>
+:param&nbsp;coordinates:&nbsp;list&nbsp;(list&nbsp;of&nbsp;coordinates&nbsp;used&nbsp;by&nbsp;words)<br>
+:param&nbsp;words:&nbsp;list&nbsp;(list&nbsp;of&nbsp;words&nbsp;used&nbsp;by&nbsp;coordinates)<br>
+:param&nbsp;word_number:&nbsp;integer&nbsp;(number&nbsp;of&nbsp;the&nbsp;word&nbsp;corresponding&nbsp;to&nbsp;the&nbsp;number&nbsp;on&nbsp;the&nbsp;puzzle)<br>
+:return:&nbsp;string&nbsp;(part&nbsp;of&nbsp;the&nbsp;words&nbsp;that&nbsp;will&nbsp;be&nbsp;presented&nbsp;at&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle)</tt></dd></dl>
+
+<dl><dt><a name="Gui-make_puzzle_page"><strong>make_puzzle_page</strong></a>(self, grid_size, puzzle, h_coordinates, v_coordinates, h_words, v_words)</dt></dl>
+
+<dl><dt><a name="Gui-make_puzzle_words"><strong>make_puzzle_words</strong></a>(self, h_words, v_words, first_grid_points, grid_size)</dt><dd><tt>builds&nbsp;the&nbsp;string&nbsp;that&nbsp;will&nbsp;be&nbsp;presented&nbsp;at&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
+&nbsp;<br>
+:param&nbsp;h_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;horizontal&nbsp;words)<br>
+:param&nbsp;v_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;vertical&nbsp;words)<br>
+:param&nbsp;first_grid_points:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;first&nbsp;individual&nbsp;coordinate&nbsp;points)<br>
+:param&nbsp;grid_size:&nbsp;integer&nbsp;(dimension&nbsp;sizes&nbsp;of&nbsp;the&nbsp;grid)<br>
+:return:&nbsp;string&nbsp;(string&nbsp;presented&nbsp;on&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle)</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

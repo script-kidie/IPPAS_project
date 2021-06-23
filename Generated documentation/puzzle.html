@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module puzzle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>puzzle</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cbram%5Cdocuments%5Cgithub%5Cippas_project%5Cpuzzle.py">c:\users\bram\documents\github\ippas_project\puzzle.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="sqlite3.html">sqlite3</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="puzzle.html#Puzzle">Puzzle</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Puzzle">class <strong>Puzzle</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Puzzle">Puzzle</a>(grid)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Puzzle-__init__"><strong>__init__</strong></a>(self, grid)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-fill_grid"><strong>fill_grid</strong></a>(self, word, coordinates)</dt><dd><tt>Puts&nbsp;a&nbsp;word&nbsp;on&nbsp;the&nbsp;coordinates&nbsp;in&nbsp;the&nbsp;grid<br>
+&nbsp;<br>
+:param&nbsp;word:&nbsp;string<br>
+:param&nbsp;coordinates:&nbsp;list&nbsp;(a&nbsp;list&nbsp;of&nbsp;points&nbsp;that&nbsp;determines&nbsp;the&nbsp;position&nbsp;of&nbsp;the&nbsp;word's&nbsp;letters)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-fill_in_crosswords"><strong>fill_in_crosswords</strong></a>(self, word_count, min_length, max_length, min_crossings, max_crossings, grid_size)</dt><dd><tt>initiates&nbsp;the&nbsp;filling&nbsp;of&nbsp;the&nbsp;grid<br>
+&nbsp;<br>
+:param&nbsp;word_count:&nbsp;int&nbsp;(determines&nbsp;the&nbsp;amount&nbsp;of&nbsp;words&nbsp;in&nbsp;the&nbsp;puzzle)<br>
+:param&nbsp;min_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;minimal&nbsp;length&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;max_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;max&nbsp;length&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;min_crossings:&nbsp;integer&nbsp;(the&nbsp;minimal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:param&nbsp;max_crossings:&nbsp;integer&nbsp;(the&nbsp;maximal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:param&nbsp;grid_size:&nbsp;integer&nbsp;(dimension&nbsp;sizes&nbsp;of&nbsp;the&nbsp;grid)<br>
+:return:&nbsp;list,&nbsp;list,&nbsp;list,&nbsp;list&nbsp;(list&nbsp;with&nbsp;horizontal/vertical&nbsp;words,&nbsp;and&nbsp;coordinates)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-generate_coordinate"><strong>generate_coordinate</strong></a>(self, word_length, axis, grid_size)</dt><dd><tt>generates&nbsp;pseudo&nbsp;random&nbsp;coordinates&nbsp;for&nbsp;a&nbsp;word<br>
+&nbsp;<br>
+:param&nbsp;word_length:&nbsp;interger&nbsp;(determines&nbsp;the&nbsp;lenght&nbsp;of&nbsp;the&nbsp;coordinates&nbsp;and&nbsp;word)<br>
+:param&nbsp;axis:&nbsp;list&nbsp;(determines&nbsp;if&nbsp;the&nbsp;word&nbsp;is&nbsp;vertical&nbsp;or&nbsp;horizontal)<br>
+:param&nbsp;grid_size:&nbsp;integer<br>
+:return:&nbsp;list&nbsp;(list&nbsp;with&nbsp;the&nbsp;coordiantes&nbsp;for&nbsp;the&nbsp;word)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-generate_puzzle"><strong>generate_puzzle</strong></a>(self, word_count, min_length, max_length, min_crossings, max_crossings)</dt><dd><tt>initiates&nbsp;the&nbsp;entire&nbsp;process&nbsp;of&nbsp;generating&nbsp;a&nbsp;crossword&nbsp;puzzle<br>
+&nbsp;<br>
+:param&nbsp;word_count:&nbsp;int&nbsp;(determines&nbsp;the&nbsp;amount&nbsp;of&nbsp;words&nbsp;in&nbsp;the&nbsp;puzzle)<br>
+:param&nbsp;min_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;minimal&nbsp;length&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;max_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;max&nbsp;length&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;min_crossings:&nbsp;integer&nbsp;(the&nbsp;minimal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:param&nbsp;max_crossings:&nbsp;integer&nbsp;(the&nbsp;maximal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:return:</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-get_crossword"><strong>get_crossword</strong></a>(self, min_length, max_length, grid_size, used_coordinates, words, min_crossings, max_crossings, axis, currently_faulty_coordinates, repeats)</dt><dd><tt>determines&nbsp;if&nbsp;a&nbsp;word&nbsp;can&nbsp;be&nbsp;put&nbsp;on&nbsp;the&nbsp;grid&nbsp;with&nbsp;the&nbsp;given&nbsp;coordinates,&nbsp;creates&nbsp;a&nbsp;condition&nbsp;for&nbsp;the&nbsp;SQL&nbsp;query<br>
+and&nbsp;initiates&nbsp;the&nbsp;filling&nbsp;of&nbsp;the&nbsp;grid&nbsp;for&nbsp;a&nbsp;single&nbsp;word<br>
+&nbsp;<br>
+:param&nbsp;min_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;minimal&nbsp;lenght&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;max_length:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;max&nbsp;lenght&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;grid_size:&nbsp;integer&nbsp;(dimension&nbsp;sizes&nbsp;of&nbsp;the&nbsp;grid)<br>
+:param&nbsp;used_coordinates:&nbsp;list&nbsp;(coordinates&nbsp;that&nbsp;are&nbsp;already&nbsp;in&nbsp;use&nbsp;on&nbsp;the&nbsp;axis)<br>
+:param&nbsp;words:&nbsp;list&nbsp;(a&nbsp;list&nbsp;of&nbsp;words&nbsp;that&nbsp;are&nbsp;used&nbsp;in&nbsp;te&nbsp;grid,&nbsp;this&nbsp;list&nbsp;wil&nbsp;be&nbsp;used&nbsp;in&nbsp;the&nbsp;gui)<br>
+:param&nbsp;min_crossings:&nbsp;integer&nbsp;(the&nbsp;minimal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:param&nbsp;max_crossings:&nbsp;integer&nbsp;(the&nbsp;maximal&nbsp;amount&nbsp;of&nbsp;crossings&nbsp;between&nbsp;words)<br>
+:param&nbsp;axis:&nbsp;list&nbsp;(determines&nbsp;the&nbsp;axis&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;currently_faulty_coordinates:&nbsp;list&nbsp;(a&nbsp;list&nbsp;with&nbsp;coordinates&nbsp;that&nbsp;are&nbsp;faulty&nbsp;in&nbsp;the&nbsp;current&nbsp;iteration)<br>
+:param&nbsp;repeats:&nbsp;integer&nbsp;(the&nbsp;amount&nbsp;of&nbsp;times&nbsp;the&nbsp;has&nbsp;called&nbsp;itself)<br>
+:return:&nbsp;list,&nbsp;list&nbsp;(the&nbsp;coordinates&nbsp;that&nbsp;are&nbsp;now&nbsp;in&nbsp;use&nbsp;on&nbsp;the&nbsp;axis&nbsp;and&nbsp;a&nbsp;list&nbsp;of&nbsp;the&nbsp;words&nbsp;on&nbsp;the&nbsp;grid)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-get_grid"><strong>get_grid</strong></a>(self)</dt><dd><tt>gathers&nbsp;the&nbsp;current&nbsp;shape&nbsp;of&nbsp;the&nbsp;grid<br>
+&nbsp;<br>
+:return:&nbsp;numpy&nbsp;chararray&nbsp;(the&nbsp;grid&nbsp;used&nbsp;for&nbsp;putting&nbsp;the&nbsp;crossword&nbsp;in&nbsp;)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-get_intersection_info"><strong>get_intersection_info</strong></a>(self, coordinates)</dt><dd><tt>Checks&nbsp;if&nbsp;the&nbsp;coordinate&nbsp;points&nbsp;cross&nbsp;with&nbsp;a&nbsp;letter&nbsp;or&nbsp;not<br>
+&nbsp;<br>
+:param&nbsp;coordinates:&nbsp;lst&nbsp;(the&nbsp;coordinates&nbsp;the&nbsp;word&nbsp;wants&nbsp;to&nbsp;follow)<br>
+:return:&nbsp;lst&nbsp;(info&nbsp;about&nbsp;where&nbsp;the&nbsp;word&nbsp;will&nbsp;cross&nbsp;with&nbsp;a&nbsp;letter)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-get_singleword"><strong>get_singleword</strong></a>(self, length, condition)</dt><dd><tt>collects&nbsp;a&nbsp;word&nbsp;from&nbsp;the&nbsp;"woordenboek.db"&nbsp;sqlite&nbsp;database<br>
+&nbsp;<br>
+:param&nbsp;length:&nbsp;int&nbsp;(determines&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;word)<br>
+:param&nbsp;condition:&nbsp;string&nbsp;(extra&nbsp;rules&nbsp;for&nbsp;the&nbsp;sql&nbsp;query&nbsp;optional)<br>
+:return:&nbsp;string&nbsp;(the&nbsp;word&nbsp;we&nbsp;want&nbsp;to&nbsp;fill&nbsp;in&nbsp;the&nbsp;grid)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-set_blank_grid"><strong>set_blank_grid</strong></a>(self, grid_size)</dt><dd><tt>Sets&nbsp;the&nbsp;grid&nbsp;as&nbsp;a&nbsp;blank&nbsp;so&nbsp;words&nbsp;can&nbsp;be&nbsp;filled&nbsp;in<br>
+&nbsp;<br>
+:param&nbsp;grid_size:&nbsp;integer&nbsp;(determines&nbsp;the&nbsp;side&nbsp;lengths&nbsp;of&nbsp;the&nbsp;grid)</tt></dd></dl>
+
+<dl><dt><a name="Puzzle-set_grid"><strong>set_grid</strong></a>(self, grid)</dt><dd><tt>Updates&nbsp;the&nbsp;grid&nbsp;to&nbsp;the&nbsp;given&nbsp;grid<br>
+&nbsp;<br>
+:param&nbsp;grid:&nbsp;numpy&nbsp;chararray&nbsp;(the&nbsp;grid&nbsp;used&nbsp;for&nbsp;putting&nbsp;the&nbsp;crosswords&nbsp;in)</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>__annotations__</strong> = {'grid': &lt;class 'list'&gt;}</dl>
+
+</td></tr></table></td></tr></table>
+</body></html>
