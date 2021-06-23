@@ -1,6 +1,7 @@
 import sqlite3, random
 import numpy as np
 
+
 class puzzle:
 
     grid: list
@@ -9,6 +10,10 @@ class puzzle:
         self.grid = grid
 
     def get_grid(self):
+        """
+        returns
+        :return:
+        """
         return self.grid
 
     def set_grid(self, grid):
@@ -165,6 +170,7 @@ class puzzle:
         self.set_blank_grid(grid_size)
 
         h_coordinates, v_coordinates, h_words, v_words = self.fill_in_crosswords(word_count, min_lenght, max_lenght,
-                                                                                 min_crossings, max_crossings,grid_size)
+                                                                                 min_crossings, max_crossings,
+                                                                                 grid_size)
         print(self.get_grid())
         return self.get_grid(), h_coordinates, v_coordinates, h_words, v_words, grid_size
