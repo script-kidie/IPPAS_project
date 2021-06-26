@@ -205,7 +205,7 @@ class Puzzle:
 
             # gather info about the generated coordinates
             intersection_info = self.get_intersection_info(gen_coordinates)
-
+            unusable_cells = self.get_unusable_cells()
             # check if the generated coordinates have valid crossings
             for point in gen_coordinates:  # loop true all the individual generated points
                 # checks if the points are already in use and if the amount of crossings is invalid
@@ -213,9 +213,9 @@ class Puzzle:
                 if point in used_point_lst or \
                         point in used_point_lst_right or \
                         point in used_point_lst_left or \
-                        point in self.get_unusable_cells() or \
-                        gen_coordinates[0] == right_used_opposite_coordinates or \
-                        gen_coordinates[len(gen_coordinates)-1] == left_used_opposite_points_lst or \
+                        point in unusable_cells or \
+                        gen_coordinates[0] in right_used_opposite_coordinates or \
+                        gen_coordinates[len(gen_coordinates)-1] in left_used_opposite_points_lst or \
                         gen_coordinates in currently_faulty_coordinates \
                         or intersection_info.count("*") >= word_lenght + 1 - min_crossings \
                         or intersection_info.count("*") < word_lenght - max_crossings:
@@ -252,7 +252,6 @@ class Puzzle:
                 # store the coordinates in a list with all the used coordinates on this axis
                 used_coordinates.append(gen_coordinates)
 
-                unusable_cells = self.get_unusable_cells()
                 if gen_coordinates[0][0] >= 0 or gen_coordinates[0][1] >= 0:
                     unusable_cells.append([gen_coordinates[0][0] - axis[0], gen_coordinates[0][1] - axis[1]])
 
@@ -262,11 +261,9 @@ class Puzzle:
                 self.set_unusable_cells(unusable_cells)
 
                 self.fill_grid(word, gen_coordinates)  # fill the grid with the word on the generated coordinates
-
                 return used_coordinates, words
 
             except TypeError:  # if a word with the conditions cant be fetched retry generating filling in a word
-                print("error1")
                 # store the generated coordinates for this iteration as invalid
                 currently_faulty_coordinates.append(gen_coordinates)
 
@@ -313,15 +310,12 @@ class Puzzle:
                 h_coordinates, h_words = self.get_crossword(min_length, max_length, grid_size, h_coordinates,
                                                             v_coordinates, h_words, min_crossings, max_crossings,
                                                             [0, 1], [], 0)
-
                 v_coordinates, v_words = self.get_crossword(min_length, max_length, grid_size, v_coordinates,
                                                             h_coordinates, v_words, min_crossings, max_crossings,
                                                             [1, 0], [], 0)
-
             return h_coordinates, v_coordinates, h_words, v_words
 
         except TypeError:
-            print("error2")
             # retry the entire process of filling the grid if
             # during filling the grid a function results in a value error
             self.set_blank_grid(grid_size)  # set the grid as a blank
@@ -345,7 +339,7 @@ class Puzzle:
         # else:
         #     grid_size = max_length + 4
 
-        grid_size = 20
+        grid_size = 18
 
         self.set_blank_grid(grid_size)  # set the grid so it can be used
 

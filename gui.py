@@ -121,22 +121,18 @@ class Gui:
         for row in range(grid_size):
             for cel in range(grid_size):
                 if puzzle[row][cel] != "*":  # if the grid positions doesnt contain a letter draw a black square
-                    p.draw_rectangle((cel * box_area + 11, row * box_area + 9),
-                                     (cel * box_area + box_area + 11, row * box_area + box_area + 9),
+                    p.draw_rectangle((cel * box_area + 3, row * box_area + 5),
+                                     (cel * box_area + box_area + 3, row * box_area + box_area + 5),
                                      line_color="black", fill_color="white")
 
                     non_black_positions.append([cel, row])  # store the coordinates
-                # else:  # draw a square that a word can be put in
-                #     p.draw_rectangle((cel * box_area + 11, row * box_area + 9),
-                #                      (cel * box_area + box_area + 11, row * box_area + box_area + 9),
-                #                      line_color="black", fill_color="black")
 
                 # draw a small number at the top left of the square if it is the begging of a word
                 point_coordinates = [row, cel]  # define the coordinates
                 if point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[0]\
                         or point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[1]:
                     # draw the number on the coordinates
-                    p.draw_text(f"{word_number}", (cel * box_area + 15, row * box_area + 13))
+                    p.draw_text(f"{word_number}", (cel * box_area + 7, row * box_area + 9))
 
                     word_number += 1
 
@@ -169,12 +165,12 @@ class Gui:
                     continue
 
                 # define the position of the letter
-                letter_location = (box_x * box_area + box_area, box_y * box_area + box_area)
+                letter_location = (box_x * box_area + box_area-9, box_y * box_area + box_area-9)
 
                 # remove the already placed letter in the square
-                p.draw_rectangle((box_x * box_area + 1 + 11, box_y * box_area + 7 + 9),
-                                 (box_x * box_area - 1 + box_area + 11,
-                                  box_y * box_area - 1 + box_area + 9),
+                p.draw_rectangle((box_x * box_area + 4, box_y * box_area + 12),
+                                 (box_x * box_area + box_area + 2,
+                                  box_y * box_area + box_area + 4),
                                  line_color="white", fill_color="white")
 
                 # draw the input letter on the puzzle grid
