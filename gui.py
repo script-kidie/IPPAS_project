@@ -109,6 +109,7 @@ class Gui:
 
         # define what teh puzzle window will use
         window = sg.Window("Bram's kruiswoord machine", layout, finalize=True)
+        # window.Maximize()  # make the window full screen
 
         p = window["puzzle"]
 
@@ -122,13 +123,13 @@ class Gui:
                 if puzzle[row][cel] != "*":  # if the grid positions doesnt contain a letter draw a black square
                     p.draw_rectangle((cel * box_area + 11, row * box_area + 9),
                                      (cel * box_area + box_area + 11, row * box_area + box_area + 9),
-                                     line_color="black")
+                                     line_color="black", fill_color="white")
 
                     non_black_positions.append([cel, row])  # store the coordinates
-                else:  # draw a square that a word can be put in
-                    p.draw_rectangle((cel * box_area + 11, row * box_area + 9),
-                                     (cel * box_area + box_area + 11, row * box_area + box_area + 9),
-                                     line_color="black", fill_color="black")
+                # else:  # draw a square that a word can be put in
+                #     p.draw_rectangle((cel * box_area + 11, row * box_area + 9),
+                #                      (cel * box_area + box_area + 11, row * box_area + box_area + 9),
+                #                      line_color="black", fill_color="black")
 
                 # draw a small number at the top left of the square if it is the begging of a word
                 point_coordinates = [row, cel]  # define the coordinates
@@ -171,13 +172,13 @@ class Gui:
                 letter_location = (box_x * box_area + box_area, box_y * box_area + box_area)
 
                 # remove the already placed letter in the square
-                p.draw_rectangle((box_x * box_area+1 + 11, box_y * box_area+7 + 9),
-                                 (box_x * box_area-1 + box_area + 11,
-                                  box_y * box_area-1 + box_area + 9),
-                                 line_color="#315259", fill_color="#315259")
+                p.draw_rectangle((box_x * box_area + 1 + 11, box_y * box_area + 7 + 9),
+                                 (box_x * box_area - 1 + box_area + 11,
+                                  box_y * box_area - 1 + box_area + 9),
+                                 line_color="white", fill_color="white")
 
                 # draw the input letter on the puzzle grid
                 p.draw_text(f"{values['-IN-']}",
                             letter_location, font="Courier 20")
-        # close the window for good practice if the code is finished
+            # close the window for good practice if the code is finished
         window.close()

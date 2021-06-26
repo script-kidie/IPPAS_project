@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from puzzle import *
 
-puzzle = Puzzle(np.chararray([]))
+puzzle = Puzzle(np.chararray([]), [])
 
 
 class TestPuzzle(TestCase):
