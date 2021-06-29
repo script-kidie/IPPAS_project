@@ -1,6 +1,7 @@
+import sys
 import PySimpleGUI as sg
+import numpy as np
 import random
-
 
 class Gui:
 
@@ -24,10 +25,11 @@ class Gui:
 
         return h_first_grid_points, v_first_grid_points
 
-    def get_puzzle_words(self, first_coordinate_point, coordinates, words, word_number):
+    def get_puzzle_words(self, first_coordinate_point, coordinates, words, word_number, option):
         """
         generates part of the words that are presented on the side of the puzzle
 
+        :param option: integer (1 or a 0 determines if what kind of puzzle the code is)
         :param first_coordinate_point: list (list of the first individual points of coordinates)
         :param coordinates: list (list of coordinates used by words)
         :param words: list (list of words used by coordinates)
@@ -40,17 +42,19 @@ class Gui:
             # fetch the corresponding word of the current point
             word = words[coordinates.index(first_coordinate_point)]
 
-            # clean up the string so no "\n" chars are present and the word is randomly shuffled
-            word = "".join("".join(random.sample(word, len(word))).split("\n"))
+            if option == 1:
+                # clean up the string so no "\n" chars are present and the word is randomly shuffled
+                word = "".join("".join(random.sample(word, len(word))).split("\n"))
 
             # concatenate the string with the number and the shuffled word
             string = (string + f"  {word_number}.{word}\n")
         return string
 
-    def make_puzzle_words(self, h_words, v_words, first_grid_points, grid_size):
+    def make_puzzle_words(self, h_words, v_words, first_grid_points, grid_size, option):
         """
         builds the string that will be presented at the side of the puzzle
 
+        :param option: integer (1 or a 0 determines if what kind of puzzle the code is)
         :param h_words: list (list that contains all te used horizontal words)
         :param v_words: list (list that contains all te used vertical words)
         :param first_grid_points: list (list that contains all te first individual coordinate points)
@@ -69,22 +73,27 @@ class Gui:
 
                 point_coordinate = [row, cel]  # define the coordinate we want to check
 
-                str1 = str1 + self.get_puzzle_words(point_coordinate, h_coordinates, h_words, word_number)
+                str1 = str1 + self.get_puzzle_words(point_coordinate, h_coordinates, h_words, word_number, option)
 
-                str2 = str2 + self.get_puzzle_words(point_coordinate, v_coordinates, v_words, word_number)
+                str2 = str2 + self.get_puzzle_words(point_coordinate, v_coordinates, v_words, word_number, option)
 
                 if point_coordinate in v_coordinates or point_coordinate in h_coordinates:
                     word_number += 1
 
         return str(str1 + str2)
 
-    def make_puzzle_page(self, grid_size, puzzle, h_coordinates, v_coordinates, h_words, v_words):
+    def make_puzzle_page(self, grid_size, puzzle, h_coordinates, v_coordinates, h_words, v_words, option):
+
+        # define the grid that will check if the users inputs are correct
+        check_grid = np.chararray((grid_size, grid_size), 1, True)
+        check_grid.fill("*")
 
         box_area = 25  # define the area of the box
 
         # define the string we want to put on the side of the puzzle
         puzzle_words = self.make_puzzle_words(h_words, v_words,
-                                              self.get_first_grid_points(h_coordinates, v_coordinates), grid_size)
+                                              self.get_first_grid_points(h_coordinates, v_coordinates), grid_size,
+                                              option)
 
         # create a custom theme for easier overview of where what color is used
         sg.LOOK_AND_FEEL_TABLE["MyCreatedTheme"] = {"BACKGROUND": "#315259",
@@ -96,16 +105,28 @@ class Gui:
                                                     "PROGRESS": ("#D1826B", "#CC8019"),
                                                     "BORDER": 1, "SLIDER_DEPTH": 0,
                                                     "PROGRESS_DEPTH": 0, }
+
         sg.theme("MyCreatedTheme")  # implement the customized theme
 
         # create the layout of the GUI with dynamically sized puzzle grid
-        layout = [
-            [sg.Text("Een verse kruiswoordpuzzel voor jou :]")],
-            [sg.Graph((round(47*grid_size), round(47*grid_size)), (0, round(26*grid_size)), (round(26*grid_size), 0),
-                      key="puzzle", change_submits=True, drag_submits=False), sg.Text(puzzle_words)],
-            [sg.Button("Exit"), sg.Text("Vul hier uw letter in :"), sg.Input(key="-IN-", size=(3, 3)),
-             sg.Text("(max 1 letter)")]
-        ]
+        if option == 1:
+            layout = [
+                [sg.Text("Een verse kruiswoordpuzzel voor jou :]")],
+                [sg.Graph((round(47*grid_size), round(47*grid_size)), (0, round(26*grid_size)),
+                          (round(26*grid_size), 0),
+                          key="puzzle", change_submits=True, drag_submits=False), sg.Text(puzzle_words)],
+                [sg.Button("Afsluiten"), sg.Text("Vul hier uw letter in :"), sg.Input(key="-IN-", size=(3, 3)),
+                 sg.Text("(max 1 letter)"), sg.Button("Check puzzel", key="check")]
+            ]
+        else:
+            layout = [
+                [sg.Text("Een verse woordzoeker voor jou :]")],
+                [sg.Graph((round(47 * grid_size), round(47 * grid_size)), (0, round(26 * grid_size)),
+                          (round(26 * grid_size), 0),
+                          key="puzzle", change_submits=True, drag_submits=False), sg.Text(puzzle_words)],
+                [sg.Button("Afsluiten"), sg.Button("Selecteren", key="-SELECT-"),
+                 sg.Button("Deselecteren", key="-UN SELECT-")]
+            ]
 
         # define what teh puzzle window will use
         window = sg.Window("Bram's kruiswoord machine", layout, finalize=True)
@@ -124,27 +145,44 @@ class Gui:
                     p.draw_rectangle((cel * box_area + 3, row * box_area + 5),
                                      (cel * box_area + box_area + 3, row * box_area + box_area + 5),
                                      line_color="black", fill_color="white")
+                    if option == 0:
+                        p.draw_text(puzzle[row][cel], (cel * box_area + 15, row * box_area + 20), font="Courier 20")
+                    else:
+                        non_black_positions.append([cel, row])  # store the coordinates
 
-                    non_black_positions.append([cel, row])  # store the coordinates
+                        # draw a small number at the top left of the square if it is the beginning of a word
+                        point_coordinates = [row, cel]  # define the coordinates
+                        if point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[0]\
+                                or point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[1]:
+                            # draw the number on the coordinates
+                            p.draw_text(f"{word_number}", (cel * box_area + 7, row * box_area + 9))
 
-                # draw a small number at the top left of the square if it is the begging of a word
-                point_coordinates = [row, cel]  # define the coordinates
-                if point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[0]\
-                        or point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[1]:
-                    # draw the number on the coordinates
-                    p.draw_text(f"{word_number}", (cel * box_area + 7, row * box_area + 9))
-
-                    word_number += 1
+                            word_number += 1
 
         # reads the values of the grid and the text input
+        select_clicked = False
+        un_select_clicked = False
         while True:  # Event Loop
+
             event, values = window.read()
 
             # close the window if the exit button or the X on the top right is pressed
-            if event in (sg.WIN_CLOSED, "Exit"):
-                break
+            if event in (sg.WIN_CLOSED, "Afsluiten"):
+                sys.exit()
 
             mouse = values["puzzle"]  # collect raw data on the mousses position on the puzzle grid
+
+            if event == "-SELECT-":
+                window["-SELECT-"].Update(button_color="red")
+                window["-UN SELECT-"].Update(button_color="#A0B52F")
+                select_clicked = True
+                un_select_clicked = False
+
+            if event == "-UN SELECT-":
+                window["-SELECT-"].Update(button_color="#A0B52F")
+                window["-UN SELECT-"].Update(button_color="red")
+                un_select_clicked = True
+                select_clicked = False
 
             if event == "puzzle":  # if a event takes place on the grid check further
                 if mouse == (None, None):  # if the mouse position is not on the grid continue
@@ -154,27 +192,74 @@ class Gui:
                 box_x = mouse[0] // box_area
                 box_y = mouse[1] // box_area
 
-                # if the coordinates of the mouse are on a black square ignore all inputs
-                if [box_x, box_y] not in non_black_positions:
+                if box_y >= grid_size:
+                    box_y = grid_size-1
+
+                if box_x >= grid_size:
+                    box_x = grid_size-1
+
+                if option == 1:
+                    # if the coordinates of the mouse are on a black square ignore all inputs
+                    if [box_x, box_y] not in non_black_positions:
+                        continue
+
+                    # give a pop up if the input is more than one character and ignore inputs
+                    if len(values["-IN-"]) > 1:
+                        sg.popup(title="Teveel letters", auto_close=True, auto_close_duration=5,
+                                 custom_text="U mag maar 1 letter invoeren")
+                        continue
+
+                    # define the position of the letter
+                    letter_location = (box_x * box_area + box_area-8, box_y * box_area + box_area-8)
+
+                    # remove the already placed letter in the square
+                    p.draw_rectangle((box_x * box_area + 4, box_y * box_area + 12),
+                                     (box_x * box_area + box_area + 2,
+                                      box_y * box_area + box_area + 4),
+                                     line_color="white", fill_color="white")
+
+                    # draw the input letter on the puzzle grid
+                    p.draw_text(f"{values['-IN-']}",
+                                letter_location, font="Courier 20")
+
+                    if len(values["-IN-"]) == 1:
+                        check_grid[box_y][box_x] = values['-IN-']
+                        print(check_grid)
+
+                else:
+                    if select_clicked:
+                        p.draw_rectangle((box_x * box_area + 3, box_y * box_area + 5),
+                                         (box_x * box_area + box_area + 3, box_y * box_area + box_area + 5),
+                                         line_color="black", fill_color="red")
+                        p.draw_text(puzzle[box_y][box_x], (box_x * box_area + 15, box_y * box_area + 20),
+                                    font="Courier 20")
+
+                    if un_select_clicked:
+                        p.draw_rectangle((box_x * box_area + 3, box_y * box_area + 5),
+                                         (box_x * box_area + box_area + 3, box_y * box_area + box_area + 5),
+                                         line_color="black", fill_color="white")
+                        p.draw_text(puzzle[box_y][box_x], (box_x * box_area + 15, box_y * box_area + 20),
+                                    font="Courier 20")
+
+            if event == "check":
+                valid_input = True
+                for y in range(len(check_grid)):
+                    for x in range(len(check_grid[0])):
+                        if check_grid[y][x] != puzzle[y][x]:
+                            valid_input = False
+
+                if valid_input:
+                    sg.popup("Gefeliciteerd je hebt de puzzel voltooid", title="Hoera!!",
+                             custom_text="terug naar start")
+                    break
+                else:
+                    sg.popup("Helaas 1 of meerdere letters zijn fout", title="jammer!!", custom_text="Veder proberen")
                     continue
 
-                # give a pop up if the input is more than one character and ignore inputs
-                if len(values["-IN-"]) > 1:
-                    sg.popup(title="Teveel letters", auto_close=True, auto_close_duration=5,
-                             custom_text="U mag maar 1 letter invoeren")
-                    continue
-
-                # define the position of the letter
-                letter_location = (box_x * box_area + box_area-9, box_y * box_area + box_area-9)
-
-                # remove the already placed letter in the square
-                p.draw_rectangle((box_x * box_area + 4, box_y * box_area + 12),
-                                 (box_x * box_area + box_area + 2,
-                                  box_y * box_area + box_area + 4),
-                                 line_color="white", fill_color="white")
-
-                # draw the input letter on the puzzle grid
-                p.draw_text(f"{values['-IN-']}",
-                            letter_location, font="Courier 20")
-            # close the window for good practice if the code is finished
+        # close the window for good practice if the code is finished
         window.close()
+
+        # checks if the application needs to be re-run
+        if valid_input:
+            return 1
+        return 0

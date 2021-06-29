@@ -1,6 +1,7 @@
 import sqlite3
 import random
 import numpy as np
+import string
 
 
 class Puzzle:
@@ -265,7 +266,6 @@ class Puzzle:
                 return used_coordinates, words
 
             except TypeError:  # if a word with the conditions cant be fetched retry generating filling in a word
-                print("error1")
                 # store the generated coordinates for this iteration as invalid
                 currently_faulty_coordinates.append(gen_coordinates)
 
@@ -330,17 +330,17 @@ class Puzzle:
             return h_coordinates, v_coordinates, h_words, v_words
 
         except TypeError:
-            print("error2")
             # retry the entire process of filling the grid if
             # during filling the grid a function results in a value error
             self.set_blank_grid(grid_size)  # set the grid as a blank
             self.set_unusable_cells([])  # reset the unusable cells
             return self.fill_in_crosswords(word_count, min_length, max_length, min_crossings, max_crossings, grid_size)
 
-    def generate_puzzle(self, word_count, min_length, max_length, min_crossings, max_crossings):
+    def generate_puzzle(self, word_count, min_length, max_length, min_crossings, max_crossings, option):
         """
-        initiates the entire process of generating a crossword puzzle
+        initiates the entire process of generating a crossword puzzle or a find the word puzzle
 
+        :param option: integer (1 or a 0 determines if what kind of puzzle the code is)
         :param word_count: int (determines the amount of words in the puzzle)
         :param min_length: integer (determines the minimal length of the word)
         :param max_length: integer (determines the max length of the word)
@@ -348,18 +348,22 @@ class Puzzle:
         :param max_crossings: integer (the maximal amount of crossings between words)
         :return:
         """
-        # calculate the size of the grid
-        # if word_count > max_length:
-        #     grid_size = word_count + 4
-        # else:
-        #     grid_size = max_length + 4
-
         grid_size = 18
+
+
+
 
         self.set_blank_grid(grid_size)  # set the grid so it can be used
 
         h_coordinates, v_coordinates, h_words, v_words = self.fill_in_crosswords(word_count, min_length, max_length,
                                                                                  min_crossings, max_crossings,
                                                                                  grid_size)
+        grid = self.get_grid()
+
+        if option == 0:
+            for y in range(grid_size):
+                for x in range(grid_size):
+                    if grid[y][x] == "*":
+                        grid[y][x] = random.choice(string.ascii_lowercase)
 
         return self.get_grid(), h_coordinates, v_coordinates, h_words, v_words, grid_size
