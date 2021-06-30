@@ -142,6 +142,14 @@ class Puzzle:
         return coordinates
 
     def get_cel_borders(self, axis, used_coordinates, used_opposite_coordinates):
+        """
+        defines the borders of all the cells that are in use
+
+        :param axis: list (determines if the word is vertical or horizontal)
+        :param used_coordinates: used_coordinates: list (coordinates that are already in use on the axis)
+        :param used_opposite_coordinates: list (used coordinates on the other axis than the word that is generated)
+        :return:
+        """
         # create a list where the individual coordinate points will be stored in so they can be compared easier
         used_point_lst = []
         used_point_lst_left = []
@@ -149,20 +157,26 @@ class Puzzle:
         right_used_opposite_points_lst = []
         left_used_opposite_points_lst = []
 
-        # puts the individual coordinate points in the corresponding list
+        # puts the individual coordinate points in the corresponding list of the current axis
         for used_coordinate_set in used_coordinates:
             for used_point in used_coordinate_set:
-                if used_point[0] >= 0 or used_point[1] >= 0:
-                    used_point_lst.append([used_point[0], used_point[1]])
+                # if the point is bigger than zero define the left and right side, else only the right side
+                if used_point[0] > 0 or used_point[1] > 0:
+                    used_point_lst.append(used_point)
+
                     used_point_lst_right.append([used_point[0] + axis[1], used_point[1] + axis[0]])
                     used_point_lst_left.append([used_point[0] - axis[1], used_point[1] - axis[0]])
                 else:
                     used_point_lst.append(used_point)
+
                     used_point_lst_right.append([used_point[0] + axis[1], used_point[1] + axis[0]])
 
+        # puts the individual coordinate points in the corresponding list of the opposite axis
         for used_coordinate_set in used_opposite_coordinates:
             for used_point in used_coordinate_set:
+                # if the point is bigger than zero define the left and right side, else only the right side
                 if used_point[0] >= 0 or used_point[1] >= 0:
+
                     right_used_opposite_points_lst.append([used_point[0] + axis[0], used_point[1] + axis[1]])
                     left_used_opposite_points_lst.append([used_point[0] - axis[0], used_point[1] - axis[1]])
                 else:
@@ -210,7 +224,8 @@ class Puzzle:
             unusable_cells = self.get_unusable_cells()
             # check if the generated coordinates have valid crossings
             for point in gen_coordinates:  # loop true all the individual generated points
-                # checks if the points are already in use and if the amount of crossings is invalid
+                # checks if the points are already in use or if the amount of crossings is invalid or
+                # if the generated coordinates intersect with certain borders it can not intersect with
                 point = [point[0], point[1]]
                 if point in used_point_lst or \
                         point in used_point_lst_right or \
@@ -350,9 +365,6 @@ class Puzzle:
         """
         grid_size = 18
 
-
-
-
         self.set_blank_grid(grid_size)  # set the grid so it can be used
 
         h_coordinates, v_coordinates, h_words, v_words = self.fill_in_crosswords(word_count, min_length, max_length,
@@ -360,6 +372,7 @@ class Puzzle:
                                                                                  grid_size)
         grid = self.get_grid()
 
+        # put a random lowercase letter on empty points in the grid
         if option == 0:
             for y in range(grid_size):
                 for x in range(grid_size):
