@@ -17,9 +17,11 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="random.html">random</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
 </td><td width="25%" valign=top><a href="PySimpleGUI.html">PySimpleGUI</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -48,18 +50,29 @@
 :param&nbsp;v_coordinates:&nbsp;list&nbsp;(list&nbsp;with&nbsp;all&nbsp;the&nbsp;coordinates&nbsp;used&nbsp;for&nbsp;vertical&nbsp;words)<br>
 :return:&nbsp;list,&nbsp;list&nbsp;(contain&nbsp;the&nbsp;first&nbsp;individual&nbsp;coordinate&nbsp;points&nbsp;of&nbsp;the&nbsp;horizontal&nbsp;or&nbsp;vertical&nbsp;words)</tt></dd></dl>
 
-<dl><dt><a name="Gui-get_puzzle_words"><strong>get_puzzle_words</strong></a>(self, first_coordinate_point, coordinates, words, word_number)</dt><dd><tt>generates&nbsp;part&nbsp;of&nbsp;the&nbsp;words&nbsp;that&nbsp;are&nbsp;presented&nbsp;on&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
+<dl><dt><a name="Gui-get_puzzle_words"><strong>get_puzzle_words</strong></a>(self, first_coordinate_point, coordinates, words, word_number, option)</dt><dd><tt>generates&nbsp;part&nbsp;of&nbsp;the&nbsp;words&nbsp;that&nbsp;are&nbsp;presented&nbsp;on&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
 &nbsp;<br>
+:param&nbsp;option:&nbsp;integer&nbsp;(1&nbsp;or&nbsp;a&nbsp;0&nbsp;determines&nbsp;if&nbsp;what&nbsp;kind&nbsp;of&nbsp;puzzle&nbsp;the&nbsp;code&nbsp;is)<br>
 :param&nbsp;first_coordinate_point:&nbsp;list&nbsp;(list&nbsp;of&nbsp;the&nbsp;first&nbsp;individual&nbsp;points&nbsp;of&nbsp;coordinates)<br>
 :param&nbsp;coordinates:&nbsp;list&nbsp;(list&nbsp;of&nbsp;coordinates&nbsp;used&nbsp;by&nbsp;words)<br>
 :param&nbsp;words:&nbsp;list&nbsp;(list&nbsp;of&nbsp;words&nbsp;used&nbsp;by&nbsp;coordinates)<br>
 :param&nbsp;word_number:&nbsp;integer&nbsp;(number&nbsp;of&nbsp;the&nbsp;word&nbsp;corresponding&nbsp;to&nbsp;the&nbsp;number&nbsp;on&nbsp;the&nbsp;puzzle)<br>
 :return:&nbsp;string&nbsp;(part&nbsp;of&nbsp;the&nbsp;words&nbsp;that&nbsp;will&nbsp;be&nbsp;presented&nbsp;at&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle)</tt></dd></dl>
 
-<dl><dt><a name="Gui-make_puzzle_page"><strong>make_puzzle_page</strong></a>(self, grid_size, puzzle, h_coordinates, v_coordinates, h_words, v_words)</dt></dl>
-
-<dl><dt><a name="Gui-make_puzzle_words"><strong>make_puzzle_words</strong></a>(self, h_words, v_words, first_grid_points, grid_size)</dt><dd><tt>builds&nbsp;the&nbsp;string&nbsp;that&nbsp;will&nbsp;be&nbsp;presented&nbsp;at&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
+<dl><dt><a name="Gui-make_puzzle_page"><strong>make_puzzle_page</strong></a>(self, grid_size, puzzle, h_coordinates, v_coordinates, h_words, v_words, option)</dt><dd><tt>builds&nbsp;the&nbsp;interface&nbsp;of&nbsp;the&nbsp;puzzle&nbsp;that&nbsp;the&nbsp;user&nbsp;interacts&nbsp;with<br>
 &nbsp;<br>
+:param&nbsp;grid_size:&nbsp;integer&nbsp;(dimension&nbsp;sizes&nbsp;of&nbsp;the&nbsp;grid)<br>
+:param&nbsp;puzzle:&nbsp;list&nbsp;(list&nbsp;that&nbsp;represents&nbsp;the&nbsp;current&nbsp;puzzle)<br>
+:param&nbsp;h_coordinates:&nbsp;list&nbsp;(list&nbsp;with&nbsp;all&nbsp;the&nbsp;coordinates&nbsp;used&nbsp;for&nbsp;horizontal&nbsp;words)<br>
+:param&nbsp;v_coordinates:&nbsp;list&nbsp;(list&nbsp;with&nbsp;all&nbsp;the&nbsp;coordinates&nbsp;used&nbsp;for&nbsp;vertical&nbsp;words)<br>
+:param&nbsp;h_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;horizontal&nbsp;words)<br>
+:param&nbsp;v_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;vertical&nbsp;words)<br>
+:param&nbsp;option:&nbsp;integer&nbsp;(1&nbsp;or&nbsp;a&nbsp;0&nbsp;determines&nbsp;if&nbsp;what&nbsp;kind&nbsp;of&nbsp;puzzle&nbsp;the&nbsp;code&nbsp;is)<br>
+:return:&nbsp;integer&nbsp;(1&nbsp;or&nbsp;0&nbsp;determines&nbsp;if&nbsp;the&nbsp;code&nbsp;returns&nbsp;to&nbsp;the&nbsp;start&nbsp;menu&nbsp;or&nbsp;exits&nbsp;the&nbsp;code)</tt></dd></dl>
+
+<dl><dt><a name="Gui-make_puzzle_words"><strong>make_puzzle_words</strong></a>(self, h_words, v_words, first_grid_points, grid_size, option)</dt><dd><tt>builds&nbsp;the&nbsp;string&nbsp;that&nbsp;will&nbsp;be&nbsp;presented&nbsp;at&nbsp;the&nbsp;side&nbsp;of&nbsp;the&nbsp;puzzle<br>
+&nbsp;<br>
+:param&nbsp;option:&nbsp;integer&nbsp;(1&nbsp;or&nbsp;a&nbsp;0&nbsp;determines&nbsp;if&nbsp;what&nbsp;kind&nbsp;of&nbsp;puzzle&nbsp;the&nbsp;code&nbsp;is)<br>
 :param&nbsp;h_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;horizontal&nbsp;words)<br>
 :param&nbsp;v_words:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;used&nbsp;vertical&nbsp;words)<br>
 :param&nbsp;first_grid_points:&nbsp;list&nbsp;(list&nbsp;that&nbsp;contains&nbsp;all&nbsp;te&nbsp;first&nbsp;individual&nbsp;coordinate&nbsp;points)<br>
