@@ -144,7 +144,7 @@ class Gui:
 
         # define what teh puzzle window will use
         window = sg.Window("Bram's kruiswoord machine", layout, finalize=True)
-        # window.Maximize()  # make the window full screen
+        window.Maximize()  # make the window full screen
 
         p = window["puzzle"]
 

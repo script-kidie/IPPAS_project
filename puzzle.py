@@ -363,7 +363,7 @@ class Puzzle:
         :param max_crossings: integer (the maximal amount of crossings between words)
         :return:
         """
-        grid_size = 18
+        grid_size = 16
 
         self.set_blank_grid(grid_size)  # set the grid so it can be used
 
