@@ -52,8 +52,8 @@ def start_application():
 
     # define the layout for the second page
     layout2 = [
-        [sg.Text("Selecteer een puzzel grote (puzzles groter dan 15 kunnen 20sec duren om te genereren)",
-                 key="-TXT-")],
+        [sg.Text("Selecteer een puzzel grote"), sg.Text("(puzzles groter dan 18 kunnen lang duren om te genereren)",
+                                                        text_color="lightgreen")],
         [sg.Slider(range=(2, 20), size=(50, 10), orientation="h",
                    key="slider")],
         [sg.Button("genereer puzzel", key="-GEN-")]

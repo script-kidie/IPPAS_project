@@ -126,8 +126,8 @@ class Gui:
         if option == 1:
             layout = [
                 [sg.Text("Een verse kruiswoordpuzzel voor jou :]")],
-                [sg.Graph((round(47*grid_size), round(47*grid_size)), (0, round(26*grid_size)),
-                          (round(26*grid_size), 0),
+                [sg.Graph((round(47 * grid_size), round(47 * grid_size)), (0, round(26 * grid_size)),
+                          (round(26 * grid_size), 0),
                           key="puzzle", change_submits=True, drag_submits=False), sg.Text(puzzle_words)],
                 [sg.Button("Afsluiten"), sg.Text("Vul hier uw letter in :"), sg.Input(key="-IN-", size=(3, 3)),
                  sg.Text("(max 1 letter)"), sg.Button("Check puzzel", key="check")]
@@ -166,7 +166,7 @@ class Gui:
 
                         # draw a small number at the top left of the square if it is the beginning of a word
                         point_coordinates = [row, cel]  # define the coordinates
-                        if point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[0]\
+                        if point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[0] \
                                 or point_coordinates in self.get_first_grid_points(h_coordinates, v_coordinates)[1]:
                             # draw the number on the coordinates
                             p.draw_text(f"{word_number}", (cel * box_area + 7, row * box_area + 9))
@@ -212,10 +212,10 @@ class Gui:
 
                 # ensures the user cant click outside the puzzle
                 if box_y >= grid_size:
-                    box_y = grid_size-1
+                    box_y = grid_size - 1
 
                 if box_x >= grid_size:
-                    box_x = grid_size-1
+                    box_x = grid_size - 1
 
                 if option == 1:
                     # if the coordinates of the mouse are on a unused square ignore all inputs on the grid
@@ -229,7 +229,7 @@ class Gui:
                         continue
 
                     # define the position of the letter
-                    letter_location = (box_x * box_area + box_area-8, box_y * box_area + box_area-8)
+                    letter_location = (box_x * box_area + box_area - 8, box_y * box_area + box_area - 8)
 
                     # remove the already placed letter in the square
                     p.draw_rectangle((box_x * box_area + 4, box_y * box_area + 12),

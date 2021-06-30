@@ -183,7 +183,7 @@ class Puzzle:
                     right_used_opposite_points_lst.append([used_point[0] + axis[0], used_point[1] + axis[1]])
 
         return used_point_lst, used_point_lst_left, used_point_lst_right, \
-            right_used_opposite_points_lst, left_used_opposite_points_lst
+               right_used_opposite_points_lst, left_used_opposite_points_lst
 
     def get_crossword(self, min_length, max_length, grid_size, used_coordinates, used_opposite_coordinates, words,
                       min_crossings, max_crossings,
@@ -207,13 +207,13 @@ class Puzzle:
         """
         # if the functions has called itself more than 50 times return an error so a entirely new grid will be generated
         # this is done to prevent a stack overflow if the grid starts with a word that is hard to cross with
-        if repeats > 50:
+        if repeats > 60:
             return TypeError
         else:
             word_length = random.randint(min_length, max_length)  # generate a random word length
 
             used_point_lst, used_point_lst_left, used_point_lst_right, \
-                right_used_opposite_coordinates,\
+                right_used_opposite_coordinates, \
                 left_used_opposite_points_lst = self.get_cel_borders(axis, used_coordinates, used_opposite_coordinates)
 
             # generate coordinates for the generated word length
@@ -232,7 +232,7 @@ class Puzzle:
                         point in used_point_lst_left or \
                         point in unusable_cells or \
                         gen_coordinates[0] in right_used_opposite_coordinates or \
-                        gen_coordinates[len(gen_coordinates)-1] in left_used_opposite_points_lst or \
+                        gen_coordinates[len(gen_coordinates) - 1] in left_used_opposite_points_lst or \
                         gen_coordinates in currently_faulty_coordinates \
                         or intersection_info.count("*") >= word_length + 1 - min_crossings \
                         or intersection_info.count("*") < word_length - max_crossings:
